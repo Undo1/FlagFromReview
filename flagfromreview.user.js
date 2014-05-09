@@ -20,28 +20,50 @@ function with_jquery(f) {
 
 
 with_jquery(function($){
-	$('document').ready(function(){
-	    var htm=$('.post-menu').html()||"";
-	    if(htm!=-1&&$('[id^=close-question] span').length!=0){
-	        return;
-	    }
-		$('.reviewable-post-stats.module :first tr:last').after($('<a class="flagfromreview" href="javascript:void(0)" title="Flag">flag (VLQ)</a>'));
+	$(document).ajaxComplete(function() {
+		setTimeout(function() 
+			{
+				$('.reviewable-post-stats.module :first tr:last').after($('<tr><td class="label-key"><a class="flagfromreview" href="javascript:void(0)" title="Flag">flag as NAA</a></td><td class="label-value"></td></tr>'));
+				$('.flagfromreview').bind('click', function()
+				{
+					var postId=$(this).closest('div.reviewable-post').attr("class").split(" ")[1].split("-")[2];
+					$(this).html("<strong>working...</strong");
+					$.post('/flags/posts/'+postId+'/add/AnswerNotAnAnswer',
+						{'otherText':'','fkey':StackExchange.options.user.fkey},
+						function(data){
+							console.log(data);
+							if (data.Success == true)
+							{
+								$(".flagfromreview").html("success");
+							}
+							else
+							{
+								$('.flagfromreview').html("uh-oh");
+							}
+						}
+					);
+
+				});
+			},
+			3000
+		);
+
 		// $('.ot10').bind("click",function(){
 
 		// 	var postid=$(this).closest('div.question,div[id^=answer]').data('questionid')||$(this).closest('div.question,div[id^=answer]').data('answerid');
 		// 	$(this).html("<strong>working...</strong>");
-		// 	$.post('/flags/questions/'+postid+'/close/add',
-		// 		{'closeReasonId':'OffTopic','duplicateOfQuestionId':'','closeAsOffTopicReasonId':'10','offTopicOtherText':'This question appears to be off-topic because it is about','offTopicOtherCommentId':'','originalOffTopicOtherText':'This question appears to be off-topic because it is about','fkey':StackExchange.options.user.fkey},
-		// 		function(data){
-		// 			console.log(data);
-		// 			if (data.Success == true)
-		// 			{
-		// 				$(".ot10").html("success");
-		// 				$(".close-question-link").html("close (" + data.Count + ")");
-		// 				$(".ot10").remove();
-		// 			}
-		// 		}
-		// 	);
+			// $.post('/flags/questions/'+postid+'/close/add',
+			// 	{'closeReasonId':'OffTopic','duplicateOfQuestionId':'','closeAsOffTopicReasonId':'10','offTopicOtherText':'This question appears to be off-topic because it is about','offTopicOtherCommentId':'','originalOffTopicOtherText':'This question appears to be off-topic because it is about','fkey':StackExchange.options.user.fkey},
+			// 	function(data){
+			// 		console.log(data);
+			// 		if (data.Success == true)
+			// 		{
+			// 			$(".ot10").html("success");
+			// 			$(".close-question-link").html("close (" + data.Count + ")");
+			// 			$(".ot10").remove();
+			// 		}
+			// 	}
+			// );
 		// });
 		return false;
 	});
