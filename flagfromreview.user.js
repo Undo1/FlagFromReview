@@ -21,32 +21,31 @@ function with_jquery(f) {
 
 with_jquery(function($){
 	$(document).ajaxComplete(function() {
-		setTimeout(function() 
-			{
-				$('.reviewable-post-stats.module :first tr:last').after($('<tr><td class="label-key"><a class="flagfromreview" href="javascript:void(0)" title="Flag">flag as NAA</a></td><td class="label-value"></td></tr>'));
-				$('.flagfromreview').bind('click', function()
-				{
-					var postId=$(this).closest('div.reviewable-post').attr("class").split(" ")[1].split("-")[2];
-					$(this).html("<strong>working...</strong");
-					$.post('/flags/posts/'+postId+'/add/AnswerNotAnAnswer',
-						{'otherText':'','fkey':StackExchange.options.user.fkey},
-						function(data){
-							console.log(data);
-							if (data.Success == true)
-							{
-								$(".flagfromreview").html("success");
-							}
-							else
-							{
-								$('.flagfromreview').html("uh-oh");
-							}
-						}
-					);
+		if ($('.flagfromreview').length > 0)
+		{
+			return;
+		}
+		$('.reviewable-post-stats.module :first tr:last').after($('<tr><td class="label-key"><a class="flagfromreview" href="javascript:void(0)" title="Flag">flag as NAA</a></td><td class="label-value"></td></tr>'));
+		$('.flagfromreview').bind('click', function()
+		{
+			var postId=$(this).closest('div.reviewable-post').attr("class").split(" ")[1].split("-")[2];
+			$(this).html("<strong>working...</strong");
+			$.post('/flags/posts/'+postId+'/add/AnswerNotAnAnswer',
+				{'otherText':'','fkey':StackExchange.options.user.fkey},
+				function(data){
+					console.log(data);
+					if (data.Success == true)
+					{
+						$(".flagfromreview").html("success");
+					}
+					else
+					{
+						$('.flagfromreview').html("uh-oh");
+					}
+				}
+			);
 
-				});
-			},
-			3000
-		);
+		});
 
 		// $('.ot10').bind("click",function(){
 
