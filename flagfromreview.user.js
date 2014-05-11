@@ -46,6 +46,28 @@ with_jquery(function($){
 			);
 
 		});
+		$('.reviewable-post-stats.module :first tr:last').after($('<tr><td class="label-key"><a class="downvotefromreview" href="javascript:void(0)" title="Downvote">downvote</a></td><td class="label-value"></td></tr>'));
+		$('.downvotefromreview').bind('click', function()
+		{
+			var postId=$(this).closest('div.reviewable-post').attr("class").split(" ")[1].split("-")[2];
+			$(this).html("<strong>working...</strong");
+			$.post('/posts/' + postId + '/vote/3',
+				{'fkey':StackExchange.options.user.fkey},
+				function(data){
+					console.log(data);
+					if (data.Success == true)
+					{
+						$(".downvotefromreview").html("success");
+						$(".reviewable-post .vote-count-post").html(data.NewScore);
+					}
+					else
+					{
+						$('.downvotefromreview').html("uh-oh");
+					}
+				}
+			);
+
+		});
 
 		// $('.ot10').bind("click",function(){
 
