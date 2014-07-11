@@ -69,23 +69,6 @@ with_jquery(function($){
 
 		});
 
-		// $('.ot10').bind("click",function(){
-
-		// 	var postid=$(this).closest('div.question,div[id^=answer]').data('questionid')||$(this).closest('div.question,div[id^=answer]').data('answerid');
-		// 	$(this).html("<strong>working...</strong>");
-			// $.post('/flags/questions/'+postid+'/close/add',
-			// 	{'closeReasonId':'OffTopic','duplicateOfQuestionId':'','closeAsOffTopicReasonId':'10','offTopicOtherText':'This question appears to be off-topic because it is about','offTopicOtherCommentId':'','originalOffTopicOtherText':'This question appears to be off-topic because it is about','fkey':StackExchange.options.user.fkey},
-			// 	function(data){
-			// 		console.log(data);
-			// 		if (data.Success == true)
-			// 		{
-			// 			$(".ot10").html("success");
-			// 			$(".close-question-link").html("close (" + data.Count + ")");
-			// 			$(".ot10").remove();
-			// 		}
-			// 	}
-			// );
-		// });
 		return false;
 	});
 });
